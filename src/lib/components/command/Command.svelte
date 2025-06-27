@@ -1,13 +1,16 @@
 <script lang="ts">
   import * as Command from "$lib/components/ui/command";
-  import ImportDialog from "../toolbox/ImportDialog.svelte";
+  import GeoJsonFromURLDialog from "$lib/components/toolbox/geojson/importFromUrlDialog.svelte";
+  import GeoJsonFromFileDialog from "$lib/components/toolbox/geojson/ImportFromFileDialog.svelte";
 
   let open: boolean = $state(false);
-  let importDialogOpen: boolean = $state(false);
+  let geoJsonFromURLOpen: boolean = $state(false);
+  let geoJsonFromFileOpen: boolean = $state(false);
+
+  let geoJsonFromUrlDialog: GeoJsonFromURLDialog | undefined = $state();
 
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-      console.log("Hello?", open);
       e.preventDefault();
       open = !open;
     }
@@ -21,20 +24,27 @@
   <Command.List>
     <Command.Empty>No results found</Command.Empty>
     <Command.Group heading="GeoJSON">
-      <Command.Item onclick={() => (importDialogOpen = !importDialogOpen)}>
-        Import GeoJSON from URL...
+      <Command.Item onclick={() => (geoJsonFromURLOpen = !geoJsonFromURLOpen)}>
+        Import from URL
       </Command.Item>
-      <Command.Item onclick={() => (importDialogOpen = !importDialogOpen)}>
-        Import GeoJSON from file...
+      <Command.Item onclick={() => (geoJsonFromFileOpen = !geoJsonFromFileOpen)}>
+        Import from file
       </Command.Item>
     </Command.Group>
   </Command.List>
 </Command.Dialog>
 
-<ImportDialog
-  open={importDialogOpen}
+<GeoJsonFromURLDialog
+  bind:this={geoJsonFromUrlDialog}
+  open={geoJsonFromURLOpen}
   onClose={() => {
-    open = false;
-    importDialogOpen = false;
+    geoJsonFromURLOpen = false;
+  }}
+/>
+
+<GeoJsonFromFileDialog
+  open={geoJsonFromFileOpen}
+  onClose={() => {
+    geoJsonFromFileOpen = false;
   }}
 />

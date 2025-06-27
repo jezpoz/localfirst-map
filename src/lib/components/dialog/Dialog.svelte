@@ -1,7 +1,15 @@
 <script lang="ts">
   import * as Dialog from "$lib/components/ui/dialog";
+    import type { Snippet } from "svelte";
 
-  let { open, onClose }: { open: boolean; onClose?: () => void } = $props();
+  interface DialogProps {
+    title: string;
+    open: boolean;
+    onClose?: () => void;
+    children?: Snippet;
+  }
+
+  let { title, open, onClose, children }: DialogProps = $props();
 
   function handleOpenChange(isOpen: boolean) {
     if (onClose && !isOpen && open) {
@@ -13,9 +21,9 @@
 
 <Dialog.Root {open} onOpenChange={handleOpenChange}>
   <Dialog.Content>
-    <Dialog.Header>Import GeoJSON</Dialog.Header>
+    <Dialog.Header>{title}</Dialog.Header>
     <Dialog.Description>
-      Import your GeoJSON. Upload file or paste a URL where they are hosted.
+      {@render children?.()}
     </Dialog.Description>
   </Dialog.Content>
 </Dialog.Root>
