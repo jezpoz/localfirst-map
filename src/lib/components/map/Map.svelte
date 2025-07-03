@@ -38,7 +38,9 @@
       next: handleCollectionSubscription,
     });
   });
-
+  db.collections.hook("deleting", (id: string) => {
+    // Unsure how to find the feature collection
+  });
   const collections = liveQuery(() => db.collections.toArray());
 
   function handleCollectionSubscription(result: GeoJsonCollection[]) {
